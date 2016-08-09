@@ -1,0 +1,42 @@
+swagger: '2.0'
+info:
+  description: Provieds raw home data.
+  version: 1.0.0
+  title: Home-Log
+  contact: { name: 'veasy' }
+tags:
+  - name: DATA
+    description: Read data form the service.
+consumes:
+  - application/json
+produces:
+  - application/json
+
+paths:
+  /meteo/temperature:
+    get:
+      description: Get raw temperature json data.
+      tags:
+        - DATA
+      operationId: homelog.routes.log_route.get_temperature
+      responses:
+        200:
+          description: OK
+
+  /data/raw:
+    post:
+      description: Post raw data to the service.
+      tags:
+        - DATA
+      operationId: homelog.routes.log_route.post_raw
+      responses:
+        200:
+          description: OK
+
+parameters:
+  instrument:
+    name: instrument
+    in: query
+    description: Name of the instrument.
+    required: true
+    type: string
