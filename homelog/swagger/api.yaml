@@ -19,6 +19,36 @@ paths:
       tags:
         - DATA
       operationId: homelog.routes.log_route.get_temperature
+      parameters:
+        - $ref: "#/parameters/startTime"
+        - $ref: "#/parameters/endTime"
+      responses:
+        200:
+          description: OK
+
+
+  /meteo/pressure:
+    get:
+      description: Get raw pressure json data.
+      tags:
+        - DATA
+      operationId: homelog.routes.log_route.get_pressure
+      parameters:
+        - $ref: "#/parameters/startTime"
+        - $ref: "#/parameters/endTime"
+      responses:
+        200:
+          description: OK
+
+  /meteo/humidity:
+    get:
+      description: Get raw humidity json data.
+      tags:
+        - DATA
+      operationId: homelog.routes.log_route.get_humidity
+      parameters:
+        - $ref: "#/parameters/startTime"
+        - $ref: "#/parameters/endTime"
       responses:
         200:
           description: OK
@@ -34,9 +64,18 @@ paths:
           description: OK
 
 parameters:
-  instrument:
-    name: instrument
+  startTime:
+    name: startTime
     in: query
-    description: Name of the instrument.
+    description: Start time of dataset.
     required: true
     type: string
+    format: date-time
+
+  endTime:
+    name: endTime
+    in: query
+    description: End time of dataset.
+    required: true
+    type: string
+    format: date-time

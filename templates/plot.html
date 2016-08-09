@@ -1,0 +1,38 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+    <style>
+
+        canvas {
+            width: 100% !important;
+            max-width: 800px;
+            height: auto !important;
+        }
+    </style>
+</head>
+
+<body>
+<canvas id="c"></canvas>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/1.0.2/Chart.min.js"></script>
+<script>
+    var ctx = document.getElementById("c").getContext("2d");
+    var data = {
+        labels: {{ hours }},
+        datasets: [{
+            label: "Temperature",
+            fillColor: "rgba(220,220,220,0.2)",
+            strokeColor: "rgba(220,220,220,1)",
+            pointColor: "rgba(220,220,220,1)",
+            pointStrokeColor: "#fff",
+            pointHighlightFill: "#fff",
+            pointHighlightStroke: "rgba(220,220,220,1)",
+            data: {{ temperature_data }}
+        }]
+    };
+    var MyNewChart = new Chart(ctx).Line(data);
+    MyNewChart.redraw();
+</script>
+</body>
+
+</html>

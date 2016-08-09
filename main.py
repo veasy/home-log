@@ -3,6 +3,8 @@ import json
 import logging
 
 import connexion
+import datetime
+from flask import render_template
 from flask.ext.compress import Compress
 from flask.ext.cors import CORS
 
@@ -49,8 +51,20 @@ def start_server():
 
 
 # uwsgi app variable
-ecallisto_service_app = start_server()
-application = ecallisto_service_app.app
+homelog_service_app = start_server()
+application = homelog_service_app.app
+
+
+@homelog_service_app.app.route('/plot')
+def index_page():
+    with DataProvider() as ctx:
+        hours = list(range(datetime.datetime.now().hour + 1, datetime.datetime.now().hour + 25))
+        hours = map(lambda x: x % 24, hours)
+        data = ctx.get_dataset(datetime.datetime.now() - datetime.timedelta(days=1),
+                               datetime.datetime.now())
+        temperature_data = map(lambda x: x.get_record()['temperature'], data)
+        return render_template('plot.html', temperature_data=temperature_data, hours=hours)
+
 
 if __name__ == '__main__':
-    ecallisto_service_app.run(use_reloader=False)
+    homelog_service_app.run(use_reloader=False)

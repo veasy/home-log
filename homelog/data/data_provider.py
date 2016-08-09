@@ -39,3 +39,9 @@ class DataProvider(object):
                      pressure=data[config.METEO_PRESSURE],
                      temperature=data[config.METEO_TEMPERATURE],
                      humidity=data[config.METEO_HUMIDITY])
+
+    def get_dataset(self, start_time, end_time, instrument='*'):
+        table = self.db[self.__data_table_name]
+        query = "'%s'<observation AND observation<'%s'" % (start_time, end_time)
+        print(query)
+        return table.query(query, instrument)
