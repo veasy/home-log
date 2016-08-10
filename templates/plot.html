@@ -28,7 +28,7 @@
 
     <style>
         .ct-label {
-            font-size: 1.5rem;
+            font-size: 1rem;
         }
 
         .ct-point {
@@ -93,16 +93,16 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="/plot">Home Log</a>
+      <a class="navbar-brand" onclick="window.location='/plot'" href="#">Home Log</a>
     </div>
 
     <!-- Collect the nav links, forms, and other content for toggling -->
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
       <ul class="nav navbar-nav">
-          <li><a href="/plot/hour">Hour</a></li>
-          <li><a href="/plot">Day</a></li>
-          <li><a href="/plot/week">Week</a></li>
-          <li><a href="/plot/month">Month</a></li>
+          <li><a onclick="window.location='/plot/hour'" href="#">Hour</a></li>
+          <li><a onclick="window.location='/plot'" href="#">Day</a></li>
+          <li><a onclick="window.location='/plot/week'" href="#">Week</a></li>
+          <li><a onclick="window.location='/plot/month'" href="#">Month</a></li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
           <li><a href="/ui">API</a></li>
