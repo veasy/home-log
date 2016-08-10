@@ -12,6 +12,8 @@ from homelog import config
 from homelog.data.data_provider import DataProvider
 from homelog.service_response import ServiceResponse
 
+import time
+
 
 def all_exception_handler(error):
     print('Error: %s' % error)
@@ -58,12 +60,24 @@ application = homelog_service_app.app
 @homelog_service_app.app.route('/plot')
 def index_page():
     with DataProvider() as ctx:
-        hours = list(range(datetime.datetime.now().hour + 1, datetime.datetime.now().hour + 25))
-        hours = map(lambda x: x % 24, hours)
         data = ctx.get_dataset(datetime.datetime.now() - datetime.timedelta(days=1),
                                datetime.datetime.now())
-        temperature_data = map(lambda x: x.get_record()['temperature'], data)
-        return render_template('plot.html', temperature_data=temperature_data, hours=hours)
+
+        temperature_data = get_chart_data('temperature', data)
+        pressure_data = get_chart_data('pressure', data)
+        humidity_data = get_chart_data('humidity', data)
+        luminosity_data = get_chart_data('luminosity', data)
+
+        return render_template('plot.html',
+                               temperature_data=temperature_data,
+                               pressure_data=pressure_data,
+                               humidity_data=humidity_data,
+                               luminosity_data=luminosity_data)
+
+
+def get_chart_data(field, data):
+    return ',\n'.join(map(lambda x: "{ x: %s, y: %.2f }" % (
+        int(time.mktime(x.get_record()['observation'].timetuple())), x.get_record()[field]), data))
 
 
 if __name__ == '__main__':
