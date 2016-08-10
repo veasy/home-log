@@ -57,11 +57,11 @@ homelog_service_app = start_server()
 application = homelog_service_app.app
 
 
-@homelog_service_app.app.route('/plot')
-def index_page():
+@homelog_service_app.app.route('/plot/hour')
+def plot_hour():
     with DataProvider() as ctx:
-        data = ctx.get_dataset(datetime.datetime.now() - datetime.timedelta(days=1),
-                               datetime.datetime.now())
+        data = ctx.get_dataset(datetime.datetime.now() - datetime.timedelta(hours=1),
+                               datetime.datetime.now())[::2]
 
         temperature_data = get_chart_data('temperature', data)
         pressure_data = get_chart_data('pressure', data)
@@ -72,12 +72,70 @@ def index_page():
                                temperature_data=temperature_data,
                                pressure_data=pressure_data,
                                humidity_data=humidity_data,
-                               luminosity_data=luminosity_data)
+                               luminosity_data=luminosity_data,
+                               divisor=5)
+
+
+@homelog_service_app.app.route('/plot')
+def plot_day():
+    with DataProvider() as ctx:
+        data = ctx.get_dataset(datetime.datetime.now() - datetime.timedelta(days=1),
+                               datetime.datetime.now())[::15]
+
+        temperature_data = get_chart_data('temperature', data)
+        pressure_data = get_chart_data('pressure', data)
+        humidity_data = get_chart_data('humidity', data)
+        luminosity_data = get_chart_data('luminosity', data)
+
+        return render_template('plot.html',
+                               temperature_data=temperature_data,
+                               pressure_data=pressure_data,
+                               humidity_data=humidity_data,
+                               luminosity_data=luminosity_data,
+                               divisor=5)
+
+
+@homelog_service_app.app.route('/plot/week')
+def plot_week():
+    with DataProvider() as ctx:
+        data = ctx.get_dataset(datetime.datetime.now() - datetime.timedelta(days=7),
+                               datetime.datetime.now())[::120]
+
+        temperature_data = get_chart_data('temperature', data)
+        pressure_data = get_chart_data('pressure', data)
+        humidity_data = get_chart_data('humidity', data)
+        luminosity_data = get_chart_data('luminosity', data)
+
+        return render_template('plot.html',
+                               temperature_data=temperature_data,
+                               pressure_data=pressure_data,
+                               humidity_data=humidity_data,
+                               luminosity_data=luminosity_data,
+                               divisor=5)
+
+
+@homelog_service_app.app.route('/plot/month')
+def plot_month():
+    with DataProvider() as ctx:
+        data = ctx.get_dataset(datetime.datetime.now() - datetime.timedelta(days=30),
+                               datetime.datetime.now())[::3600]
+
+        temperature_data = get_chart_data('temperature', data)
+        pressure_data = get_chart_data('pressure', data)
+        humidity_data = get_chart_data('humidity', data)
+        luminosity_data = get_chart_data('luminosity', data)
+
+        return render_template('plot.html',
+                               temperature_data=temperature_data,
+                               pressure_data=pressure_data,
+                               humidity_data=humidity_data,
+                               luminosity_data=luminosity_data,
+                               divisor=5)
 
 
 def get_chart_data(field, data):
     return ',\n'.join(map(lambda x: "{ x: %s, y: %.2f }" % (
-        int(time.mktime(x.get_record()['observation'].timetuple())), x.get_record()[field]), data[::15]))
+        int(time.mktime(x.get_record()['observation'].timetuple())), x.get_record()[field]), data))
 
 
 if __name__ == '__main__':
