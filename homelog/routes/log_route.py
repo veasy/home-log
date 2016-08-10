@@ -32,7 +32,7 @@ def post_raw():
         current = datetime.datetime.fromtimestamp(int(data[config.TIME_STAMP]))
 
         # log only every 60 seconds
-        if(current - latest['observation']).seconds >= 60:
+        if latest is None or (current - latest['observation']).seconds >= 60:
             ctx.add_log(data)
             print("data logged!")
     return 200
