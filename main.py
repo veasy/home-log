@@ -77,7 +77,7 @@ def index_page():
 
 def get_chart_data(field, data):
     return ',\n'.join(map(lambda x: "{ x: %s, y: %.2f }" % (
-        int(time.mktime(x.get_record()['observation'].timetuple())), x.get_record()[field]), data))
+        int(time.mktime(x.get_record()['observation'].timetuple())), x.get_record()[field]), data[::15]))
 
 
 if __name__ == '__main__':

@@ -19,12 +19,53 @@
         moment.tz.setDefault("Europe/Zurich");
     </script>
 
-    <style>
-
-    </style>
-
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0-alpha/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/chartist/0.9.8/chartist.min.css">
+
+    <style>
+        .ct-point {
+          stroke-width: 6px !important;
+          stroke-linecap: round;
+        }
+
+        .ct-line {
+          stroke: #ff574b;
+          stroke-width: 2px !important;
+          stroke-linecap: round;
+        }
+
+        #chart1 .ct-point, #chart1 .ct-line {
+            stroke: #EA2E49;
+        }
+
+        #chart1 .ct-area {
+            fill: #EA2E49;
+        }
+
+        #chart2 .ct-point, #chart2 .ct-line {
+            stroke: #77C4D3;
+        }
+
+        #chart2 .ct-area {
+            fill: #77C4D3;
+        }
+
+        #chart3 .ct-point, #chart3 .ct-line {
+            stroke: #333745;
+        }
+
+        #chart3 .ct-area {
+            fill: #333745;
+        }
+
+        #chart4 .ct-point, #chart4 .ct-line {
+            stroke: #edcf41;
+        }
+
+        #chart4 .ct-area {
+            fill: #edcf41;
+        }
+    </style>
 </head>
 
 <body>
@@ -43,7 +84,7 @@
 
 <script>
     // Initialize a Line chart in the container with the ID chart1
-    new Chartist.Line('#chart1', {
+    var c1 = new Chartist.Line('#chart1', {
         series: [{
             name: 'temperature',
             data: [{{temperature_data}}]
@@ -52,7 +93,7 @@
         showArea: true,
         axisX: {
             type: Chartist.FixedScaleAxis,
-            divisor: 10,
+            divisor: 5,
             labelInterpolationFnc: function (value) {
                 return moment.unix(value).format('HH:mm');
             }
@@ -65,7 +106,7 @@
     });
 
     // Initialize a Line chart in the container with the ID chart1
-    new Chartist.Line('#chart2', {
+    var c2 = new Chartist.Line('#chart2', {
         series: [{
             name: 'humidity',
             data: [{{humidity_data}}]
@@ -74,7 +115,7 @@
         showArea: true,
         axisX: {
             type: Chartist.FixedScaleAxis,
-            divisor: 10,
+            divisor: 5,
             labelInterpolationFnc: function (value) {
                 return moment.unix(value).format('HH:mm');
             }
@@ -87,7 +128,7 @@
     });
 
     // Initialize a Line chart in the container with the ID chart1
-    new Chartist.Line('#chart3', {
+    var c3 = new Chartist.Line('#chart3', {
         series: [{
             name: 'pressure',
             data: [{{pressure_data}}]
@@ -96,7 +137,7 @@
         showArea: true,
         axisX: {
             type: Chartist.FixedScaleAxis,
-            divisor: 10,
+            divisor: 5,
             labelInterpolationFnc: function (value) {
                 return moment.unix(value).format('HH:mm');
             }
@@ -109,7 +150,7 @@
     });
 
     // Initialize a Line chart in the container with the ID chart1
-    new Chartist.Line('#chart4', {
+    var c4 = new Chartist.Line('#chart4', {
         series: [{
             name: 'luminosity',
             data: [{{luminosity_data}}]
@@ -118,7 +159,7 @@
         showArea: true,
         axisX: {
             type: Chartist.FixedScaleAxis,
-            divisor: 10,
+            divisor: 5,
             labelInterpolationFnc: function (value) {
                 return moment.unix(value).format('HH:mm');
             }
