@@ -1,5 +1,7 @@
+import datetime
 from flask import request
 from iso8601 import iso8601
+from homelog import config
 
 from homelog.data.data_provider import DataProvider
 
@@ -23,9 +25,16 @@ def get_humidity():
 
 
 def post_raw():
-    print("raw data logged")
+    data = request.json
+
     with DataProvider() as ctx:
-        ctx.add_log(request.json)
+        latest = ctx.get_latest_log()
+        current = datetime.datetime.fromtimestamp(int(data[config.TIME_STAMP]))
+
+        # log only every 60 seconds
+        if(current - latest['observation']).seconds >= 60:
+            ctx.add_log(data)
+            print("data logged!")
     return 200
 
 

@@ -45,3 +45,7 @@ class DataProvider(object):
         query = "'%s'<observation AND observation<'%s'" % (start_time, end_time)
         print(query)
         return table.query(query, instrument)
+
+    def get_latest_log(self):
+        table = self.db[self.__data_table_name]
+        return table.query_one('TRUE ORDER BY observation DESC LIMIT 1')
