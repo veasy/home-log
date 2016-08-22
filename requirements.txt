@@ -2,3 +2,4 @@ iso8601
 connexion
 flask
 pg4nosql
+uwsgi
