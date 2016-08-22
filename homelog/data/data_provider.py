@@ -44,7 +44,7 @@ class DataProvider(object):
         table = self.db[self.__data_table_name]
         query = "'%s'<observation AND observation<'%s'" % (start_time, end_time)
         print(query)
-        return table.query(query, instrument)
+        return table.query(query, '%s, %s' % ('observation', instrument))
 
     def get_latest_log(self):
         table = self.db[self.__data_table_name]

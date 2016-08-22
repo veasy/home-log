@@ -3,10 +3,14 @@ info:
   description: Provieds raw home data.
   version: 1.0.0
   title: Home-Log
-  contact: { name: 'veasy' }
+  contact: { name: 'Veasy' }
 tags:
   - name: DATA
-    description: Read data form the service.
+    description: Read and submit data for the service.
+  - name: ENVIRONMENT
+    description: Read environment data.
+  - name: METEO
+    description: Read meteo data.
 consumes:
   - application/json
 produces:
@@ -15,40 +19,80 @@ produces:
 paths:
   /meteo/temperature:
     get:
-      description: Get raw temperature json data.
+      description: Get raw temperature data as json.
       tags:
-        - DATA
+        - METEO
       operationId: homelog.routes.log_route.get_temperature
       parameters:
         - $ref: "#/parameters/startTime"
         - $ref: "#/parameters/endTime"
+        - $ref: "#/parameters/samplingRate"
       responses:
         200:
           description: OK
 
-
   /meteo/pressure:
     get:
-      description: Get raw pressure json data.
+      description: Get raw pressure data as json.
       tags:
-        - DATA
+        - METEO
       operationId: homelog.routes.log_route.get_pressure
       parameters:
         - $ref: "#/parameters/startTime"
         - $ref: "#/parameters/endTime"
+        - $ref: "#/parameters/samplingRate"
       responses:
         200:
           description: OK
 
   /meteo/humidity:
     get:
-      description: Get raw humidity json data.
+      description: Get raw humidity data as json.
       tags:
-        - DATA
+        - METEO
       operationId: homelog.routes.log_route.get_humidity
       parameters:
         - $ref: "#/parameters/startTime"
         - $ref: "#/parameters/endTime"
+        - $ref: "#/parameters/samplingRate"
+      responses:
+        200:
+          description: OK
+
+  /environment/luminosity:
+    get:
+      description: Get raw luminosity data as json.
+      tags:
+        - ENVIRONMENT
+      operationId: homelog.routes.log_route.get_luminosity
+      parameters:
+        - $ref: "#/parameters/startTime"
+        - $ref: "#/parameters/endTime"
+        - $ref: "#/parameters/samplingRate"
+      responses:
+        200:
+          description: OK
+
+  /environment/wireless:
+    get:
+      description: Get raw wireless strength data as json.
+      tags:
+        - ENVIRONMENT
+      operationId: homelog.routes.log_route.get_wireless
+      parameters:
+        - $ref: "#/parameters/startTime"
+        - $ref: "#/parameters/endTime"
+        - $ref: "#/parameters/samplingRate"
+      responses:
+        200:
+          description: OK
+
+  /data/latest:
+    get:
+      description: Get latest meteo data as json.
+      tags:
+        - DATA
+      operationId: homelog.routes.log_route.get_latest
       responses:
         200:
           description: OK
@@ -79,3 +123,11 @@ parameters:
     required: true
     type: string
     format: date-time
+
+  samplingRate:
+    name: samplingRate
+    in: query
+    description: Sampling rate.
+    required: false
+    type: integer
+    format: int32
