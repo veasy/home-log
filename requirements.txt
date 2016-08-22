@@ -1,5 +1,5 @@
 iso8601
-connexion
+connexion==1.0.97
 flask
 pg4nosql
 uwsgi
