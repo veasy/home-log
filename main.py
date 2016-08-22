@@ -75,7 +75,8 @@ def plot_hour():
                                pressure_data=pressure_data,
                                humidity_data=humidity_data,
                                luminosity_data=luminosity_data,
-                               divisor=5)
+                               divisor=5,
+                               time_format='HH:mm:ss')
 
 
 @homelog_service_app.app.route('/plot')
@@ -95,7 +96,8 @@ def plot_day():
                                pressure_data=pressure_data,
                                humidity_data=humidity_data,
                                luminosity_data=luminosity_data,
-                               divisor=5)
+                               divisor=5,
+                               time_format='ddd HH:mm')
 
 
 @homelog_service_app.app.route('/plot/week')
@@ -115,7 +117,8 @@ def plot_week():
                                pressure_data=pressure_data,
                                humidity_data=humidity_data,
                                luminosity_data=luminosity_data,
-                               divisor=5)
+                               divisor=5,
+                               time_format='ddd DD MMM YY')
 
 
 @homelog_service_app.app.route('/plot/month')
@@ -135,7 +138,8 @@ def plot_month():
                                pressure_data=pressure_data,
                                humidity_data=humidity_data,
                                luminosity_data=luminosity_data,
-                               divisor=5)
+                               divisor=5,
+                               time_format='ddd DD MMM YY')
 
 
 def data_to_tuple(field, data):
@@ -158,7 +162,9 @@ def sub_sample(data, rate):
         s = 0.0
         for j in xrange(len(part)):
             s += part[j][1]
-        sampled.append((data[index][0], (s / len(part))))
+
+        # select middle date time
+        sampled.append((data[index + int(len(part) / 2)][0], (s / len(part))))
 
     return sampled
 
