@@ -59,11 +59,9 @@ homelog_service_app = start_server()
 application = homelog_service_app.app
 
 
-@homelog_service_app.app.route('/plot/hour')
-def plot_hour():
+def plot(rate, delta, divisor, time_format):
     with DataProvider() as ctx:
-        rate = 2
-        data = ctx.get_dataset(datetime.datetime.now() - datetime.timedelta(hours=1),
+        data = ctx.get_dataset(datetime.datetime.now() - delta,
                                datetime.datetime.now())
 
         temperature_data = data_to_string(sub_sample(data_to_tuple('temperature', data), rate))
@@ -76,71 +74,28 @@ def plot_hour():
                                pressure_data=pressure_data,
                                humidity_data=humidity_data,
                                luminosity_data=luminosity_data,
-                               divisor=5,
-                               time_format='HH:mm:ss')
+                               divisor=divisor,
+                               time_format=time_format)
+
+
+@homelog_service_app.app.route('/plot/hour')
+def plot_hour():
+    return plot(2, datetime.timedelta(hours=1), 5, 'HH:mm:ss')
 
 
 @homelog_service_app.app.route('/plot')
 def plot_day():
-    with DataProvider() as ctx:
-        rate = 15
-        data = ctx.get_dataset(datetime.datetime.now() - datetime.timedelta(days=1),
-                               datetime.datetime.now())
-
-        temperature_data = data_to_string(sub_sample(data_to_tuple('temperature', data), rate))
-        pressure_data = data_to_string(sub_sample(data_to_tuple('pressure', data), rate))
-        humidity_data = data_to_string(sub_sample(data_to_tuple('humidity', data), rate))
-        luminosity_data = data_to_string(sub_sample(data_to_tuple('luminosity', data), rate))
-
-        return render_template('plot.html',
-                               temperature_data=temperature_data,
-                               pressure_data=pressure_data,
-                               humidity_data=humidity_data,
-                               luminosity_data=luminosity_data,
-                               divisor=5,
-                               time_format='ddd HH:mm')
+    return plot(15, datetime.timedelta(days=1), 5, 'ddd HH:mm')
 
 
 @homelog_service_app.app.route('/plot/week')
 def plot_week():
-    with DataProvider() as ctx:
-        rate = 120
-        data = ctx.get_dataset(datetime.datetime.now() - datetime.timedelta(days=7),
-                               datetime.datetime.now())
-
-        temperature_data = data_to_string(sub_sample(data_to_tuple('temperature', data), rate))
-        pressure_data = data_to_string(sub_sample(data_to_tuple('pressure', data), rate))
-        humidity_data = data_to_string(sub_sample(data_to_tuple('humidity', data), rate))
-        luminosity_data = data_to_string(sub_sample(data_to_tuple('luminosity', data), rate))
-
-        return render_template('plot.html',
-                               temperature_data=temperature_data,
-                               pressure_data=pressure_data,
-                               humidity_data=humidity_data,
-                               luminosity_data=luminosity_data,
-                               divisor=5,
-                               time_format='ddd DD MMM YY')
+    return plot(120, datetime.timedelta(days=7), 5, 'ddd DD MMM YY')
 
 
 @homelog_service_app.app.route('/plot/month')
 def plot_month():
-    with DataProvider() as ctx:
-        rate = 3600
-        data = ctx.get_dataset(datetime.datetime.now() - datetime.timedelta(days=30),
-                               datetime.datetime.now())
-
-        temperature_data = data_to_string(sub_sample(data_to_tuple('temperature', data), rate))
-        pressure_data = data_to_string(sub_sample(data_to_tuple('pressure', data), rate))
-        humidity_data = data_to_string(sub_sample(data_to_tuple('humidity', data), rate))
-        luminosity_data = data_to_string(sub_sample(data_to_tuple('luminosity', data), rate))
-
-        return render_template('plot.html',
-                               temperature_data=temperature_data,
-                               pressure_data=pressure_data,
-                               humidity_data=humidity_data,
-                               luminosity_data=luminosity_data,
-                               divisor=5,
-                               time_format='ddd DD MMM YY')
+    return plot(3600, datetime.timedelta(days=30), 5, 'ddd DD MMM YY')
 
 
 if __name__ == '__main__':
